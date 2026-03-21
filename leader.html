@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendzForce · Leader Dashboard</title>
+<link rel="icon" type="image/png" href="logo_png.png">
+<meta name="description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+<meta property="og:title" content="TrendzForce">
+<meta property="og:description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+<meta property="og:image" content="logo_png.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f172a; --paper:#f8fafc; --gold:#7c3aed; --gold-pale:#f5f3ff; --gold-dim:#5b21b6;
+  --muted:#64748b; --border:#e2e8f0; --error:#ef4444; --success:#10b981; --blue:#3b82f6;
+  --sidebar-w:248px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);font-family:'Inter',sans-serif;color:var(--ink);display:flex;min-height:100vh}
+
+.sidebar{width:var(--sidebar-w);background:var(--ink);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;overflow-y:auto}
+.sidebar-brand{padding:24px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-brand-name{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.sb-brand-name span{color:var(--gold)}
+.sb-role-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+.sb-user{padding:16px 20px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-avatar{width:36px;height:36px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;color:#fff;margin-bottom:8px}
+.sb-user-name{font-size:13px;font-weight:600;color:#fff}
+.sb-user-handle{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sb-user-group{font-size:11px;color:var(--gold);margin-top:3px}
+.sb-nav{padding:12px 0;flex:1}
+.sb-nav-item{display:flex;align-items:center;gap:10px;padding:10px 22px;font-size:13px;color:rgba(255,255,255,.55);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.sb-nav-item:hover{background:rgba(255,255,255,.05);color:#fff}
+.sb-nav-item.active{background:rgba(200,168,75,.1);color:var(--gold);border-left-color:var(--gold)}
+.sb-nav-icon{font-size:15px;width:18px;text-align:center}
+.sb-section-label{padding:16px 22px 6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.sb-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
+.btn-logout{width:100%;padding:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
+.btn-logout:hover{background:rgba(184,76,46,.2);color:#e88;border-color:rgba(184,76,46,.3)}
+
+.main{margin-left:var(--sidebar-w);flex:1;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:18px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-title{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-date{font-size:13px;color:var(--muted)}
+.group-chip{background:var(--gold-pale);border:1px solid rgba(200,168,75,.4);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--gold-dim)}
+
+.content{padding:32px 36px}
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* Stats */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:18px 20px}
+.sc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px}
+.sc-value{font-family:'Outfit',sans-serif;font-size:30px;font-weight:800;color:var(--ink)}
+.sc-value.gold{color:var(--gold-dim)} .sc-value.green{color:var(--success)} .sc-value.red{color:var(--error)} .sc-value.blue{color:var(--blue)}
+
+/* Filter bar */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.filter-btn{padding:7px 14px;background:#fff;border:1.5px solid var(--border);border-radius:20px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold-dim)}
+.filter-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.search-box{flex:1;max-width:280px;padding:8px 14px;background:#fff;border:1.5px solid var(--border);border-radius:20px;font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);outline:none;transition:border-color .2s}
+.search-box:focus{border-color:var(--gold)}
+
+/* Reports table */
+.section-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.section-card-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.section-card-title{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-dim)}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:11px 16px;text-align:left;border-bottom:1.5px solid var(--border);white-space:nowrap;background:#faf9f6}
+td{padding:13px 16px;border-bottom:1px solid #f0ede8;vertical-align:middle}
+tr:hover td{background:#faf9f7}
+tr:last-child td{border-bottom:none}
+
+.status-pill{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.sp-pending{background:#fff8e8;color:#8a6010;border:1px solid #e8d090}
+.sp-leader{background:#e8f0fb;color:#2060a8;border:1px solid #90b8e8}
+.sp-verified{background:#eef5f0;color:var(--success);border:1px solid #b8d9c4}
+.sp-rejected{background:#fff1ee;color:var(--error);border:1px solid #f5c8be}
+
+.action-btns{display:flex;gap:6px}
+.btn-sm{padding:5px 12px;border-radius:6px;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .15s;white-space:nowrap}
+.btn-verify{background:#eef5f0;border-color:#b8d9c4;color:var(--success)}
+.btn-verify:hover{background:var(--success);color:#fff;border-color:var(--success)}
+.btn-reject{background:#fff1ee;border-color:#f5c8be;color:var(--error)}
+.btn-reject:hover{background:var(--error);color:#fff;border-color:var(--error)}
+.btn-view{background:#f4f4f2;border-color:#ddd;color:var(--muted)}
+.btn-view:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,13,13,.7);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.modal-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:10}
+.modal-title{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px}
+.modal-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);padding:0;line-height:1}
+.modal-close:hover{color:var(--ink)}
+.modal-body{padding:24px 28px}
+.modal-footer{padding:16px 28px 24px;display:flex;gap:10px}
+.modal-footer .btn-full{flex:1;padding:12px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s}
+.btn-verify-full{background:#eef5f0;border-color:#b8d9c4;color:var(--success)}
+.btn-verify-full:hover{background:var(--success);color:#fff;border-color:var(--success)}
+.btn-reject-full{background:#fff1ee;border-color:#f5c8be;color:var(--error)}
+.btn-reject-full:hover{background:var(--error);color:#fff;border-color:var(--error)}
+.btn-close-modal{background:#f4f4f2;border-color:#ddd;color:var(--muted)}
+.btn-close-modal:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.modal-input{width:100%;padding:10px 14px;background:#f9f8f6;border:1.5px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);margin-top:6px;outline:none;transition:all .2s;}
+.modal-input:focus{border-color:var(--gold);}
+
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.detail-card{background:#f9f8f6;border-radius:10px;padding:14px}
+.dc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:4px}
+.dc-value{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--ink)}
+.dc-value.gold{color:var(--gold-dim)}
+.modal-section-title{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--gold-dim);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.modal-section-title::after{content:'';flex:1;height:1px;background:var(--gold-pale)}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;background:var(--gold-pale);border:1px solid rgba(200,168,75,.4);border-radius:20px;padding:3px 10px;font-size:12px;color:#6b5a2a}
+.engagement-list{font-size:13px;color:var(--ink);line-height:2}
+.notes-box{background:#f9f8f6;border-radius:10px;padding:14px;font-size:13px;color:var(--muted);line-height:1.6;font-style:italic}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;border-radius:12px;padding:14px 20px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .35s;z-index:9999}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Members roster */
+.member-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f0ede8}
+.member-row:last-child{border-bottom:none}
+.m-avatar{width:36px;height:36px;background:var(--gold-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:13px;color:var(--gold-dim);flex-shrink:0}
+.m-name{font-size:13px;font-weight:600;color:var(--ink)}
+.m-handle{font-size:11px;color:var(--muted);margin-top:1px}
+.m-today{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px}
+
+@media(max-width:900px){
+  .sidebar{display:flex; transform:translateX(-100%); transition:transform 0.3s ease; border-right:1px solid rgba(255,255,255,0.1); width:280px}
+  .sidebar.show{transform:translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.5);}
+  .sidebar-overlay{display:none; position:fixed; inset:0; background:rgba(15,23,42,0.7); z-index:190; backdrop-filter:blur(3px);}
+  .sidebar-overlay.show{display:block;}
+  .mobile-menu-btn{display:flex !important;}
+  .main{margin-left:0}
+  .stat-row{grid-template-columns:1fr 1fr}.content{padding:20px} .topbar-mobile-logo{display:block !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+<aside class="sidebar">
+  <div class="sidebar-brand" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img src="logo_png.png" alt="Logo" style="height:28px; border-radius:6px;">
+      <div class="sb-brand-name">Trendz<span>Force</span></div>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" style="display:none; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; padding:4px;">✕</button>
+  </div>
+    <div class="sb-role-badge">⭐ Group Leader</div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-avatar" id="sbAvatar">L</div>
+    <div class="sb-user-name" id="sbName">Leader</div>
+    <div class="sb-user-handle" id="sbHandle">@handle</div>
+    <div class="sb-user-group" id="sbGroup">Group</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section-label">Verification</div>
+    <a class="sb-nav-item active" onclick="showSection('reports',this)"><span class="sb-nav-icon">📋</span>Group Reports</a>
+    <a class="sb-nav-item" onclick="showSection('members',this)"><span class="sb-nav-icon">👥</span>Members Roster</a>
+    <a class="sb-nav-item" onclick="showSection('summary',this)"><span class="sb-nav-icon">📊</span>Group Summary</a>
+  </nav>
+  <div class="sb-footer"><button class="btn-logout" onclick="doLogout()">← Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex; align-items:center;">
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" style="display:none; background:none; border:none; padding:4px 10px 4px 0; cursor:pointer; color:var(--ink); font-size:22px;">☰</button>
+      <img src="logo_png.png" class="topbar-mobile-logo" alt="Logo" style="height:24px; display:none; margin-right:12px;">
+      <div class="topbar-title" id="pageTitle">Group Reports</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topbarDate"></div>
+      <button class="btn-sm" onclick="openEditProfile()" style="padding:6px 14px; background:var(--ink); color:#fff; border:none; border-radius:6px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer;">Edit Profile</button>
+      <div class="group-chip" id="groupChip">My Group</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── REPORTS ── -->
+    <div class="page-section active" id="sec-reports">
+      <div class="stat-row">
+        <div class="stat-card"><div class="sc-label">Total Submitted</div><div class="sc-value gold" id="sc1">0</div></div>
+        <div class="stat-card"><div class="sc-label">Pending Review</div><div class="sc-value" id="sc2">0</div></div>
+        <div class="stat-card"><div class="sc-label">You Verified</div><div class="sc-value green" id="sc3">0</div></div>
+        <div class="stat-card"><div class="sc-label">Rejected</div><div class="sc-value red" id="sc4">0</div></div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setFilter('pending',this)">Pending</button>
+        <button class="filter-btn" onclick="setFilter('leader_verified',this)">Verified by Me</button>
+        <button class="filter-btn" onclick="setFilter('verified',this)">Admin Verified</button>
+        <button class="filter-btn" onclick="setFilter('rejected',this)">Rejected</button>
+        <input class="search-box" id="searchBox" placeholder="🔍  Search member..." oninput="renderTable()">
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">Group Reports</div>
+          <div style="font-size:12px;color:var(--muted)" id="reportCount">0 reports</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Member</th><th>Date & Time</th><th>Accounts</th><th>Posts</th><th>Likes</th><th>Shares</th><th>Comments</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reportsBody">
+            <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted)">No reports yet for your group.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── MEMBERS ── -->
+    <div class="page-section" id="sec-members">
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">Group Members Roster</div>
+          <div style="font-size:12px;color:var(--muted)">Today's submission status</div>
+        </div>
+        <div id="membersRoster">
+          <div style="padding:32px;text-align:center;color:var(--muted);font-size:13px">Member roster populates once members submit reports.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SUMMARY ── -->
+    <div class="page-section" id="sec-summary">
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">Group Performance Summary</div>
+        </div>
+        <div id="summaryContent" style="padding:28px"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- REPORT DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle">Report Detail</div>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<!-- USER EDIT PROFILE MODAL -->
+<div class="modal-overlay" id="editProfileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Edit Profile</div>
+        <div class="modal-sub">Update your personal and platform details</div>
+      </div>
+      <button class="modal-close" onclick="closeEditProfile()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid" style="display:block;">
+        <div style="margin-bottom:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Full Name</label>
+          <input type="text" id="ep_name" class="modal-input">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Group Name</label>
+          <input type="text" id="ep_group" class="modal-input" disabled style="opacity:0.6; cursor:not-allowed">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Other KingsChat Handles (comma separated)</label>
+          <input type="text" id="ep_other_handles" class="modal-input" placeholder="@handle1, @handle2">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Favorite Hashtags (comma separated)</label>
+          <input type="text" id="ep_hashtags" class="modal-input" placeholder="#tag1, #tag2">
+        </div>
+        <div class="modal-section-title" style="margin-top:24px;">External Platforms</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px;">
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">WhatsApp</label><input type="text" id="ep_wa" class="modal-input" placeholder="Number/Link"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Telegram</label><input type="text" id="ep_tg" class="modal-input" placeholder="@handle"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Twitter/X</label><input type="text" id="ep_tw" class="modal-input" placeholder="@handle"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Instagram</label><input type="text" id="ep_ig" class="modal-input" placeholder="@handle"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Facebook</label><input type="text" id="ep_fb" class="modal-input" placeholder="Profile/Page Link"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">TikTok</label><input type="text" id="ep_tt" class="modal-input" placeholder="@handle"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border-top:1px solid var(--border);">
+      <button onclick="saveProfile()" style="flex:1; padding:12px; background:var(--success); color:#fff; border:none; border-radius:10px; font-family:'Outfit',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all .2s;">Save Changes</button>
+      <button onclick="closeEditProfile()" style="padding:12px; background:#f4f4f2; color:var(--muted); border:1.5px solid #ddd; border-radius:10px; font-family:'Outfit',sans-serif; font-size:14px; font-weight:700; cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Auth ──────────────────────────────────────────────────────────────────────
+let tfUser = null;
+try { tfUser = JSON.parse(sessionStorage.getItem('tf_user')); } catch(e) {}
+if (!tfUser || tfUser.role !== 'leader') window.location.href = 'index.html';
+
+const initials = (tfUser.name||'L').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+document.getElementById('sbAvatar').textContent = initials;
+document.getElementById('sbName').textContent = tfUser.name || 'Leader';
+document.getElementById('sbHandle').textContent = tfUser.handle || '@leader';
+document.getElementById('sbGroup').textContent = tfUser.group || '—';
+document.getElementById('groupChip').textContent = tfUser.group || 'My Group';
+document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+let remoteReports = [];
+function fetchReports() {
+  fetch('api/get_reports.php')
+  .then(r=>r.json()).then(d=>{
+    if(d.success){ remoteReports = d.reports; refreshStats(); renderTable(); }
+  });
+}
+function getAllReports() { return remoteReports; }
+
+function saveAll(pool) {
+  localStorage.setItem('tf_all_reports', JSON.stringify(pool));
+}
+
+let currentFilter = 'all';
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderTable();
+}
+
+function getFilteredReports() {
+  let r = getAllReports();
+  const q = (document.getElementById('searchBox')?.value||'').toLowerCase();
+  if (currentFilter !== 'all') r = r.filter(x=>x.status===currentFilter);
+  if (q) r = r.filter(x=>(x.memberName||'').toLowerCase().includes(q)||(x.memberHandle||'').toLowerCase().includes(q));
+  return r;
+}
+
+function refreshStats() {
+  const all = getAllReports();
+  document.getElementById('sc1').textContent = all.length;
+  document.getElementById('sc2').textContent = all.filter(r=>r.status==='pending').length;
+  document.getElementById('sc3').textContent = all.filter(r=>r.status==='leader_verified').length;
+  document.getElementById('sc4').textContent = all.filter(r=>r.status==='rejected').length;
+}
+
+const spClass={pending:'sp-pending',leader_verified:'sp-leader',verified:'sp-verified',rejected:'sp-rejected'};
+const spLabel={pending:'Pending',leader_verified:'Leader Verified',verified:'Admin Verified',rejected:'Rejected'};
+
+function renderTable() {
+  const reports = getFilteredReports();
+  document.getElementById('reportCount').textContent = reports.length+' report'+(reports.length!==1?'s':'');
+  const body = document.getElementById('reportsBody');
+  if(!reports.length){
+    body.innerHTML='<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted)">No reports match this filter.</td></tr>';
+    return;
+  }
+  body.innerHTML = reports.map(r=>`
+    <tr>
+      <td><div style="font-weight:600;font-size:13px">${r.memberName||'—'}</div><div style="font-size:11px;color:var(--muted)">${r.memberHandle||''}</div></td>
+      <td style="font-size:12px;color:var(--muted)"><div style="font-weight:600;color:var(--ink)">${r.date}</div><div style="font-size:10px">${r.submittedAt ? r.submittedAt : ''}</div></td>
+      <td style="font-weight:600">${r.kingsChat?.accounts||0}</td>
+      <td style="font-weight:600">${r.kingsChat?.posts||0}</td>
+      <td>${r.kingsChat?.likes||0}</td>
+      <td>${r.kingsChat?.shares||0}</td>
+      <td>${r.kingsChat?.comments||0}</td>
+      <td><span class="status-pill ${spClass[r.status]||'sp-pending'}">${spLabel[r.status]||r.status}</span></td>
+      <td><div class="action-btns">
+        <button class="btn-sm btn-view" onclick="openModal(${r.id})">View</button>
+        ${r.status==='pending'?`<button class="btn-sm btn-verify" onclick="verifyReport(${r.id})">✓ Verify</button><button class="btn-sm btn-reject" onclick="rejectReport(${r.id})">Reject</button>`:''}
+      </div></td>
+    </tr>`).join('');
+}
+
+function verifyReport(id, fromModal=false) {
+  updateStatus(id,'leader_verified');
+  if(fromModal) closeModal();
+  showToast('✅ Report verified and sent to admin');
+}
+
+function rejectReport(id, fromModal=false) {
+  updateStatus(id,'rejected');
+  if(fromModal) closeModal();
+  showToast('❌ Report marked as rejected');
+}
+
+function updateStatus(id, status) {
+  fetch('api/verify.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({id,status,verifiedBy:tfUser.handle})})
+  .then(r=>r.json()).then(d=>{ if(d.success){ fetchReports(); } });
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+let modalReportId = null;
+
+function openModal(id) {
+  const pool = JSON.parse(localStorage.getItem('tf_all_reports')||'[]');
+  const r = pool.find(x=>x.id===id);
+  if(!r) return;
+  modalReportId = id;
+  document.getElementById('modalTitle').textContent = r.memberName || r.memberHandle || 'Report';
+  document.getElementById('modalSub').textContent = r.memberHandle+' · '+r.date+' · '+r.group;
+
+  const kc=r.kingsChat||{}; const ext=r.external||{};
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-section-title">KingsChat Metrics</div>
+    <div class="detail-grid">
+      <div class="detail-card"><div class="dc-label">Accounts</div><div class="dc-value gold">${kc.accounts||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Posts</div><div class="dc-value">${kc.posts||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Likes</div><div class="dc-value">${kc.likes||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Shares</div><div class="dc-value">${kc.shares||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Comments</div><div class="dc-value">${kc.comments||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Views</div><div class="dc-value">${kc.views||0}</div></div>
+    </div>
+    ${kc.hashtags?.length?`<div class="modal-section-title">Hashtags Used</div><div class="tag-cloud">${kc.hashtags.map(h=>`<span class="chip">${h}</span>`).join('')}</div>`:''}
+    ${kc.engagedOut?.length?`<div class="modal-section-title">Handles Engaged</div><div class="engagement-list">${kc.engagedOut.map(h=>`<span style="display:block;margin:2px 0">→ ${h}</span>`).join('')}</div>`:''}
+    ${kc.engagedIn?.length?`<div class="modal-section-title">Handles That Engaged Me</div><div class="engagement-list">${kc.engagedIn.map(h=>`<span style="display:block;margin:2px 0">← ${h}</span>`).join('')}</div>`:''}
+    <div class="modal-section-title">External Platforms</div>
+    <div class="detail-grid">
+      <div class="detail-card"><div class="dc-label">WhatsApp Views</div><div class="dc-value">${ext.whatsapp||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Telegram Views</div><div class="dc-value">${ext.telegram||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Twitter</div><div class="dc-value">${ext.twitter||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Instagram</div><div class="dc-value">${ext.instagram||0}</div></div>
+      <div class="detail-card"><div class="dc-label">Facebook</div><div class="dc-value">${ext.facebook||0}</div></div>
+      <div class="detail-card"><div class="dc-label">TikTok</div><div class="dc-value">${ext.tiktok||0}</div></div>
+    </div>
+    ${ext.channels?.length?`<div class="modal-section-title">Channel Accounts</div><div class="tag-cloud">${ext.channels.map(c=>`<span class="chip">${c}</span>`).join('')}</div>`:''}
+    ${r.notes?`<div class="modal-section-title">Notes</div><div class="notes-box">${r.notes}</div>`:''}
+    <div style="margin-top:16px;padding:12px 14px;background:#f9f8f6;border-radius:10px;font-size:12px;color:var(--muted)">
+      Submitted: ${new Date(r.submittedAt||r.date).toLocaleString()}<br>
+      Status: <strong style="color:var(--ink)">${spLabel[r.status]||r.status}</strong>
+      ${r.leaderVerifiedAt?'<br>Leader verified: '+new Date(r.leaderVerifiedAt).toLocaleString():''}
+    </div>`;
+
+  document.getElementById('modalFooter').innerHTML = r.status==='pending'
+    ? `<button class="btn-full btn-verify-full modal-footer" style="flex:1;padding:12px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid;background:#eef5f0;border-color:#b8d9c4;color:var(--success)" onclick="verifyReport(${id},true)">✓ Verify Report</button>
+       <button class="btn-full btn-reject-full modal-footer" style="flex:1;padding:12px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid;background:#fff1ee;border-color:#f5c8be;color:var(--error)" onclick="rejectReport(${id},true)">✕ Reject Report</button>
+       <button class="btn-full btn-close-modal" style="padding:12px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid #ddd;background:#f4f4f2;color:var(--muted)" onclick="closeModal()">Close</button>`
+    : `<button style="width:100%;padding:12px;border-radius:10px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid #ddd;background:#f4f4f2;color:var(--muted)" onclick="closeModal()">Close</button>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
+
+// ── Members roster ────────────────────────────────────────────────────────────
+function loadMembers(){
+  const reports = getAllReports();
+  const todayKey = new Date().toISOString().slice(0,10);
+  const seen = {};
+  reports.forEach(r=>{
+    if(!seen[r.memberHandle]) seen[r.memberHandle]={name:r.memberName,handle:r.memberHandle,submittedToday:false};
+    if(r.date===todayKey) seen[r.memberHandle].submittedToday=true;
+  });
+  const members = Object.values(seen);
+  const roster = document.getElementById('membersRoster');
+  if(!members.length){roster.innerHTML='<div style="padding:32px;text-align:center;color:var(--muted);font-size:13px">No members have submitted reports yet.</div>';return;}
+  roster.innerHTML=members.map(m=>`
+    <div class="member-row">
+      <div class="m-avatar">${(m.name||'M').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</div>
+      <div><div class="m-name">${m.name||'—'}</div><div class="m-handle">${m.handle||''}</div></div>
+      <div class="m-today">
+        ${m.submittedToday
+          ?'<span style="background:#eef5f0;border:1px solid #b8d9c4;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--success)">✓ Submitted</span>'
+          :'<span style="background:#fff1ee;border:1px solid #f5c8be;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--error)">Not submitted</span>'}
+      </div>
+    </div>`).join('');
+}
+
+// ── Summary ───────────────────────────────────────────────────────────────────
+function loadSummary(){
+  const all = getAllReports();
+  if(!all.length){document.getElementById('summaryContent').innerHTML='<p style="color:var(--muted)">No data yet.</p>';return;}
+  const totals = all.reduce((acc,r)=>{
+    acc.posts+=(r.kingsChat?.posts||0); acc.likes+=(r.kingsChat?.likes||0);
+    acc.shares+=(r.kingsChat?.shares||0); acc.comments+=(r.kingsChat?.comments||0);
+    acc.views+=(r.kingsChat?.views||0); return acc;
+  },{posts:0,likes:0,shares:0,comments:0,views:0});
+  document.getElementById('summaryContent').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      ${Object.entries(totals).map(([k,v])=>`
+        <div style="background:#f9f8f6;border-radius:12px;padding:18px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px">${k}</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--gold-dim)">${v.toLocaleString()}</div>
+        </div>`).join('')}
+      <div style="background:#f9f8f6;border-radius:12px;padding:18px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px">Total Reports</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--ink)">${all.length}</div>
+      </div>
+      <div style="background:#f9f8f6;border-radius:12px;padding:18px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px">Verified</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--success)">${all.filter(r=>r.status==='verified').length}</div>
+      </div>
+    </div>`;
+}
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+const titles={'reports':'Group Reports','members':'Members Roster','summary':'Group Summary'};
+function showSection(id,el){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.sb-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  document.getElementById('pageTitle').textContent=titles[id];
+  if(id==='members') loadMembers();
+  if(id==='summary') loadSummary();
+  if(window.innerWidth<=900) toggleMobileMenu();
+}
+
+function toggleMobileMenu() {
+  document.querySelector('.sidebar').classList.toggle('show');
+  document.getElementById('mobileOverlay').classList.toggle('show');
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function doLogout(){sessionStorage.removeItem('tf_user');window.location.href='index.html';}
+
+// ── Edit Profile ──────────────────────────────────────────────────────────────
+function openEditProfile() {
+  const u = tfUser;
+  document.getElementById('ep_name').value = u.name || '';
+  document.getElementById('ep_group').value = u.group || '';
+  document.getElementById('ep_other_handles').value = (u.otherHandles||[]).join(', ');
+  document.getElementById('ep_hashtags').value = (u.hashtags||[]).join(', ');
+  document.getElementById('ep_wa').value = u.platforms?.whatsapp || '';
+  document.getElementById('ep_tg').value = u.platforms?.telegram || '';
+  document.getElementById('ep_tw').value = u.platforms?.twitter || '';
+  document.getElementById('ep_ig').value = u.platforms?.instagram || '';
+  document.getElementById('ep_fb').value = u.platforms?.facebook || '';
+  document.getElementById('ep_tt').value = u.platforms?.tiktok || '';
+  document.getElementById('editProfileModal').classList.add('open');
+}
+
+function closeEditProfile() { document.getElementById('editProfileModal').classList.remove('open'); }
+
+function saveProfile() {
+  const body = {
+    id: tfUser.id,
+    name: document.getElementById('ep_name').value.trim(),
+    group: document.getElementById('ep_group').value,
+    otherHandles: document.getElementById('ep_other_handles').value.split(',').map(s=>s.trim()).filter(Boolean),
+    hashtags: document.getElementById('ep_hashtags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    platforms: {
+      whatsapp: document.getElementById('ep_wa').value.trim(),
+      telegram: document.getElementById('ep_tg').value.trim(),
+      twitter: document.getElementById('ep_tw').value.trim(),
+      instagram: document.getElementById('ep_ig').value.trim(),
+      facebook: document.getElementById('ep_fb').value.trim(),
+      tiktok: document.getElementById('ep_tt').value.trim()
+    }
+  };
+  fetch('api/update_profile.php', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) })
+    .then(r=>r.json()).then(d=>{
+      if(d.success) {
+        sessionStorage.setItem('tf_user', JSON.stringify(d.user));
+        tfUser = d.user;
+        closeEditProfile();
+        showToast('✅ Profile updated successfully!');
+        document.getElementById('sbName').textContent = tfUser.name || 'Leader';
+        document.getElementById('sbAvatar').textContent = (tfUser.name || 'L').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      } else { alert(d.message); }
+    }).catch(()=>alert('Network error.'));
+}
+
+// init
+fetchReports();
+</script>
+</body>
+</html>

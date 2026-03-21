@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendzForce · My Dashboard</title>
+  <link rel="icon" type="image/png" href="logo_png.png">
+  <meta name="description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+  <meta property="og:title" content="TrendzForce">
+  <meta property="og:description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+  <meta property="og:image" content="logo_png.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root{
+  --ink:#0f172a; --paper:#f8fafc; --gold:#7c3aed; --gold-pale:#f5f3ff; --gold-dim:#5b21b6;
+  --muted:#64748b; --border:#e2e8f0; --error:#ef4444; --success:#10b981; --blue:#3b82f6;
+  --sidebar-w:248px;
+}
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      background: var(--paper);
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      display: flex;
+      min-height: 100vh
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 200;
+      overflow-y: auto
+    }
+
+    .sidebar-brand {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08)
+    }
+
+    .sb-brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.5px
+    }
+
+    .sb-brand-name span {
+      color: var(--gold)
+    }
+
+    .sb-user {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08)
+    }
+
+    .sb-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px
+    }
+
+    .sb-user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff
+    }
+
+    .sb-user-handle {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .4);
+      margin-top: 2px
+    }
+
+    .sb-user-group {
+      font-size: 11px;
+      color: var(--gold);
+      margin-top: 3px
+    }
+
+    .sb-nav {
+      padding: 12px 0;
+      flex: 1
+    }
+
+    .sb-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .55);
+      cursor: pointer;
+      transition: all .15s;
+      border-left: 3px solid transparent;
+      text-decoration: none
+    }
+
+    .sb-nav-item:hover {
+      background: rgba(255, 255, 255, .05);
+      color: #fff
+    }
+
+    .sb-nav-item.active {
+      background: rgba(200, 168, 75, .1);
+      color: var(--gold);
+      border-left-color: var(--gold)
+    }
+
+    .sb-nav-icon {
+      font-size: 15px;
+      width: 18px;
+      text-align: center
+    }
+
+    .sb-section-label {
+      padding: 16px 22px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .25)
+    }
+
+    .sb-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, .08)
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 9px;
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .5);
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .02em
+    }
+
+    .btn-logout:hover {
+      background: rgba(184, 76, 46, .2);
+      color: #e88;
+      border-color: rgba(184, 76, 46, .3)
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 18px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100
+    }
+
+    .topbar-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.3px
+    }
+
+    .topbar-date {
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .content {
+      padding: 36px;
+      flex: 1
+    }
+
+    .page-section {
+      display: none
+    }
+
+    .page-section.active {
+      display: block
+    }
+
+    /* STAT CARDS */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--gold-pale);
+      opacity: .5
+    }
+
+    .sc-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 8px
+    }
+
+    .sc-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1
+    }
+
+    .sc-value.gold {
+      color: var(--gold-dim)
+    }
+
+    .sc-value.green {
+      color: var(--success)
+    }
+
+    .sc-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    /* Today status badge */
+    .today-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      margin-bottom: 24px
+    }
+
+    .today-status.pending {
+      background: #fff8e8;
+      border: 1px solid #e8d090;
+      color: #8a6010
+    }
+
+    .today-status.submitted {
+      background: #eef5f0;
+      border: 1px solid #b8d9c4;
+      color: var(--success)
+    }
+
+    .today-status.verified {
+      background: #e8f0ee;
+      border: 1px solid #90c0a8;
+      color: #1a5a3a
+    }
+
+    .today-status .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .4
+      }
+    }
+
+    /* REPORT FORM */
+    .section-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px
+    }
+
+    .section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold-pale)
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px
+    }
+
+    .metric-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .metric-group label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted)
+    }
+
+    .metric-input {
+      width: 100%;
+      padding: 11px 13px;
+      background: #f9f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s
+    }
+
+    .metric-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200, 168, 75, .1);
+      background: #fff
+    }
+
+    .form-group {
+      margin-bottom: 16px
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    input[type=text],
+    input[type=number],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 13px;
+      background: #f9f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200, 168, 75, .1);
+      background: #fff
+    }
+
+    input::placeholder {
+      color: #ccc
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.55
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    /* Tag chips */
+    .tags-field {
+      background: #f9f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 10px;
+      min-height: 46px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      cursor: text;
+      transition: border-color .2s
+    }
+
+    .tags-field:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200, 168, 75, .1);
+      background: #fff
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--gold-pale);
+      border: 1px solid rgba(200, 168, 75, .4);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: #6b5a2a;
+      white-space: nowrap
+    }
+
+    .chip-x {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #a08030;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0
+    }
+
+    .chip-x:hover {
+      color: var(--error)
+    }
+
+    .tag-input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      min-width: 100px;
+      flex: 1;
+      padding: 2px 4px
+    }
+
+    .tag-input::placeholder {
+      color: #bbb
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .02em
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: #1a1a1a;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .15)
+    }
+
+    .btn-submit:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none
+    }
+
+    /* HISTORY TABLE */
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px
+    }
+
+    .report-table th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border)
+    }
+
+    .report-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0ede8;
+      vertical-align: middle
+    }
+
+    .report-table tr:hover td {
+      background: #faf9f6
+    }
+
+    .status-pill {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .03em
+    }
+
+    .sp-pending {
+      background: #fff8e8;
+      color: #8a6010;
+      border: 1px solid #e8d090
+    }
+
+    .sp-leader {
+      background: #e8f0fb;
+      color: #2060a8;
+      border: 1px solid #90b8e8
+    }
+
+    .sp-verified {
+      background: #eef5f0;
+      color: var(--success);
+      border: 1px solid #b8d9c4
+    }
+
+    .sp-rejected {
+      background: #fff1ee;
+      color: var(--error);
+      border: 1px solid #f5c8be
+    }
+
+    /* PROFILE */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .profile-field {
+      background: #f9f8f6;
+      border-radius: 10px;
+      padding: 14px 16px
+    }
+
+    .pf-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 4px
+    }
+
+    .pf-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink)
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .35s;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1
+    }
+
+    /* Modal Classes */
+    .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(26,15,46,.4); backdrop-filter:blur(4px); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:#fff; border-radius:20px; width:100%; max-width:540px; max-height:90vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,.2); }
+    .modal-header { padding:24px 28px 20px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; position:sticky; top:0; background:#fff; z-index:10; }
+    .modal-title { font-family:'Outfit',sans-serif; font-size:20px; font-weight:800; letter-spacing:-.3px; }
+    .modal-sub { font-size:12px; color:var(--muted); margin-top:3px; }
+    .modal-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--muted); line-height:1; padding:0; }
+    .modal-close:hover { color:var(--ink); }
+    .modal-input { width:100%; padding:10px 14px; background:#f9f8f6; border:1.5px solid var(--border); border-radius:8px; font-family:'Inter',sans-serif; font-size:13px; color:var(--ink); margin-top:6px; outline:none; transition:all .2s; }
+    .modal-input:focus { border-color:var(--gold); }
+    .toast-icon {
+      font-size: 18px
+    }
+
+@media(max-width:900px){
+      .sidebar{display:flex; transform:translateX(-100%); transition:transform 0.3s ease; border-right:1px solid rgba(255,255,255,0.1); width:280px}
+      .sidebar.show{transform:translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.5);}
+      .sidebar-overlay{display:none; position:fixed; inset:0; background:rgba(15,23,42,0.7); z-index:190; backdrop-filter:blur(3px);}
+      .sidebar-overlay.show{display:block;}
+      .mobile-menu-btn{display:flex !important;}
+      .main{margin-left:0}
+
+      .stat-row {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .content {
+        padding: 20px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="sidebar-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand" style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img src="logo_png.png" alt="Logo" style="height:28px; border-radius:6px;">
+        <div class="sb-brand-name">Trendz<span>Force</span></div>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()" style="display:none; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; padding:4px;">✕</button>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">M</div>
+      <div class="sb-user-name" id="sbName">Member</div>
+      <div class="sb-user-handle" id="sbHandle">@handle</div>
+      <div class="sb-user-group" id="sbGroup">Group</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section-label">Trending</div>
+      <a class="sb-nav-item active" onclick="showSection('report',this)"><span class="sb-nav-icon">📋</span>Daily
+        Report</a>
+      <a class="sb-nav-item" onclick="showSection('history',this)"><span class="sb-nav-icon">📅</span>Report History</a>
+      <div class="sb-section-label">Account</div>
+      <a class="sb-nav-item" onclick="showSection('profile',this)"><span class="sb-nav-icon">👤</span>My Profile</a>
+    </nav>
+    <div class="sb-footer">
+      <button class="btn-logout" onclick="doLogout()">← Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex; align-items:center;">
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" style="display:none; background:none; border:none; padding:4px 10px 4px 0; cursor:pointer; color:var(--ink); font-size:22px;">☰</button>
+        <img src="logo_png.png" class="topbar-mobile-logo" alt="Logo" style="height:24px; display:none; margin-right:12px;">
+        <div class="topbar-title" id="pageTitle">Daily Report</div>
+      </div>
+      <div class="topbar-date" id="topbarDate"></div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── DAILY REPORT ── -->
+      <div class="page-section active" id="sec-report">
+
+        <div class="today-status pending" id="todayStatus">
+          <span class="dot"></span>
+          <span id="todayStatusText">Report not submitted today</span>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="sc-label">Total Reports</div>
+            <div class="sc-value gold" id="sc1">0</div>
+            <div class="sc-sub">All time</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-label">Verified</div>
+            <div class="sc-value green" id="sc2">0</div>
+            <div class="sc-sub">By admin</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-label">Streak</div>
+            <div class="sc-value" id="sc3">0</div>
+            <div class="sc-sub">Days</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-label">This Week</div>
+            <div class="sc-value" id="sc4">0</div>
+            <div class="sc-sub">Reports</div>
+          </div>
+        </div>
+
+        <!-- KingsChat Section -->
+        <div class="section-card">
+          <div class="section-label">KingsChat Trending</div>
+          <div class="metrics-grid" style="margin-bottom:20px">
+            <div class="metric-group"><label>Accounts Active</label><input class="metric-input" type="number"
+                id="kc_accounts" value="5" min="0" max="5"></div>
+            <div class="metric-group"><label>Total Posts Made</label><input class="metric-input" type="number"
+                id="kc_posts" value="0" min="0"></div>
+            <div class="metric-group"><label>Total Likes Made</label><input class="metric-input" type="number"
+                id="kc_likes" value="0" min="0"></div>
+            <div class="metric-group"><label>Total Re-Shares</label><input class="metric-input" type="number"
+                id="kc_shares" value="0" min="0"></div>
+            <div class="metric-group"><label>Total Comments</label><input class="metric-input" type="number"
+                id="kc_comments" value="0" min="0"></div>
+            <div class="metric-group"><label>Total Views</label><input class="metric-input" type="number" id="kc_views"
+                value="0" min="0"></div>
+          </div>
+
+          <div class="two-col">
+            <div class="form-group">
+              <label>Hashtags Used Today</label>
+              <div class="tags-field" id="tf_hashtags" onclick="focusTF('ti_hashtags')">
+                <input class="tag-input" id="ti_hashtags" placeholder="#kamy #rortte2 ...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>People's Posts Engaged</label>
+              <input type="number" id="kc_people_engaged" value="0" min="0" placeholder="Count">
+            </div>
+          </div>
+
+          <div class="two-col" style="margin-top:4px">
+            <div class="form-group">
+              <label>Handles You Engaged</label>
+              <div class="tags-field" id="tf_engaged_out" onclick="focusTF('ti_engaged_out')">
+                <input class="tag-input" id="ti_engaged_out" placeholder="@handle and Enter...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Handles That Engaged You</label>
+              <div class="tags-field" id="tf_engaged_in" onclick="focusTF('ti_engaged_in')">
+                <input class="tag-input" id="ti_engaged_in" placeholder="@handle and Enter...">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- External Platforms -->
+        <div class="section-card">
+          <div class="section-label">External Platforms</div>
+          <div class="metrics-grid" style="margin-bottom:20px">
+            <div class="metric-group"><label>WhatsApp Views</label><input class="metric-input" type="number" id="ext_wa"
+                value="0" min="0"></div>
+            <div class="metric-group"><label>Telegram Views</label><input class="metric-input" type="number" id="ext_tg"
+                value="0" min="0"></div>
+            <div class="metric-group"><label>Twitter Impressions</label><input class="metric-input" type="number"
+                id="ext_tw" value="0" min="0"></div>
+            <div class="metric-group"><label>Instagram Reach</label><input class="metric-input" type="number"
+                id="ext_ig" value="0" min="0"></div>
+            <div class="metric-group"><label>Facebook Views</label><input class="metric-input" type="number" id="ext_fb"
+                value="0" min="0"></div>
+            <div class="metric-group"><label>TikTok Views</label><input class="metric-input" type="number" id="ext_tt"
+                value="0" min="0"></div>
+          </div>
+
+          <div class="form-group">
+            <label>WhatsApp/Telegram Channel Accounts</label>
+            <div class="tags-field" id="tf_channels" onclick="focusTF('ti_channels')">
+              <input class="tag-input" id="ti_channels" placeholder="@lightlawre12  @efe2945 ...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="section-card">
+          <div class="section-label">Additional Notes</div>
+          <textarea id="report_notes"
+            placeholder="Any challenges, observations, or notes for your group leader..."></textarea>
+        </div>
+
+        <button class="btn-submit" id="submitBtn" onclick="submitReport()">Submit Today's Report →</button>
+      </div>
+
+      <!-- ── HISTORY ── -->
+      <div class="page-section" id="sec-history">
+        <div class="section-card">
+          <div class="section-label">My Report History</div>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Posts</th>
+                <th>Likes</th>
+                <th>Shares</th>
+                <th>Comments</th>
+                <th>Views</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody">
+              <tr>
+                <td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">No reports yet. Submit your
+                  first daily report.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── PROFILE ── -->
+      <div class="page-section" id="sec-profile">
+        <div class="section-card">
+          <div class="section-card-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:16px; margin-bottom:16px;">
+            <div class="section-label" style="margin-bottom:0; border:none; padding:0;">My Profile</div>
+            <button onclick="openEditProfile()" style="padding:7px 16px; background:var(--ink); color:#fff; border:none; border-radius:8px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer;">Edit Profile</button>
+          </div>
+          <div class="profile-grid" id="profileGrid"></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Edit Profile</div>
+          <div class="modal-sub">Update your personal and platform details</div>
+        </div>
+        <button class="modal-close" onclick="closeEditProfile()">×</button>
+      </div>
+      <div style="padding:24px 28px;">
+        <div class="form-group">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Full Name</label>
+          <input type="text" id="ep_name" class="modal-input">
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Group Name</label>
+          <input type="text" id="ep_group" class="modal-input" disabled style="opacity:0.6; cursor:not-allowed">
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Other KingsChat Handles (comma separated)</label>
+          <input type="text" id="ep_other_handles" class="modal-input" placeholder="@handle1, @handle2">
+        </div>
+        <div class="form-group" style="margin-top:16px;">
+          <label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Favorite Hashtags (comma separated)</label>
+          <input type="text" id="ep_hashtags" class="modal-input" placeholder="#tag1, #tag2">
+        </div>
+        <div style="margin-top:24px; font-family:'Outfit',sans-serif; font-weight:700; font-size:11px; color:var(--gold-dim); letter-spacing:0.05em; text-transform:uppercase; display:flex; align-items:center; gap:8px;">External Platforms <div style="flex:1; height:1px; background:var(--gold-pale);"></div></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px;">
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">WhatsApp</label><input type="text" id="ep_wa" class="modal-input" placeholder="Number/Link"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Telegram</label><input type="text" id="ep_tg" class="modal-input" placeholder="@handle"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Twitter/X</label><input type="text" id="ep_tw" class="modal-input" placeholder="@handle"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Instagram</label><input type="text" id="ep_ig" class="modal-input" placeholder="@handle"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">Facebook</label><input type="text" id="ep_fb" class="modal-input" placeholder="Profile/Page Link"></div>
+          <div><label style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:.05em;">TikTok</label><input type="text" id="ep_tt" class="modal-input" placeholder="@handle"></div>
+        </div>
+      </div>
+      <div class="modal-footer" style="padding:16px 28px 26px; display:flex; gap:10px; border-top:1px solid var(--border);">
+        <button onclick="saveProfile()" style="flex:1; padding:12px; background:var(--success); color:#fff; border:none; border-radius:10px; font-family:'Outfit',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all .2s;">Save Changes</button>
+        <button onclick="closeEditProfile()" style="padding:12px; background:#f4f4f2; color:var(--muted); border:1.5px solid #ddd; border-radius:10px; font-family:'Outfit',sans-serif; font-size:14px; font-weight:700; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span class="toast-icon">✅</span><span id="toastMsg">Report submitted!</span></div>
+
+  <script>
+    // ── Auth guard ────────────────────────────────────────────────────────────────
+    let tfUser = null;
+    try { tfUser = JSON.parse(sessionStorage.getItem('tf_user')); } catch (e) { }
+    if (!tfUser || tfUser.role !== 'member') window.location.href = 'index.html';
+
+    // ── Populate UI ───────────────────────────────────────────────────────────────
+    const initials = (tfUser.name || 'M').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    document.getElementById('sbAvatar').textContent = initials;
+    document.getElementById('sbName').textContent = tfUser.name || 'Member';
+    document.getElementById('sbHandle').textContent = tfUser.handle || tfUser.mainHandle || '@member';
+    document.getElementById('sbGroup').textContent = tfUser.group || '—';
+
+    const now = new Date();
+    document.getElementById('topbarDate').textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    const todayKey = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    const storageKey = 'tf_reports_' + (tfUser.handle || tfUser.mainHandle || 'member');
+
+    let remoteReports = [];
+    function fetchReports() {
+      fetch('api/get_reports.php').then(r=>r.json()).then(d=>{
+        if(d.success){ remoteReports = d.reports; refreshStats(); if(document.getElementById('sec-history') && document.getElementById('sec-history').classList.contains('active')) loadHistory(); }
+      });
+    }
+    fetchReports();
+    function getReports() { return remoteReports; }
+    function saveReports(r) {}
+
+    function refreshStats() {
+      const r = getReports();
+      document.getElementById('sc1').textContent = r.length;
+      document.getElementById('sc2').textContent = r.filter(x => x.status === 'verified').length;
+      document.getElementById('sc4').textContent = r.filter(x => { const d = new Date(x.date); return (now - d) < 7 * 86400000 }).length;
+
+      // Streak
+      let streak = 0, check = new Date(now);
+      while (true) {
+        const k = check.toISOString().slice(0, 10);
+        if (r.find(x => x.date === k)) { streak++; check.setDate(check.getDate() - 1); }
+        else break;
+      }
+      document.getElementById('sc3').textContent = streak;
+
+      // Today status
+      const todayReport = r.find(x => x.date === todayKey);
+      if (todayReport) {
+        const st = document.getElementById('todayStatus');
+        const stText = document.getElementById('todayStatusText');
+        if (todayReport.status === 'verified') {
+          st.className = 'today-status verified';
+          stText.textContent = '✓ Report verified by admin';
+          document.getElementById('submitBtn').disabled = true;
+          document.getElementById('submitBtn').textContent = 'Already verified';
+        }
+        else if (todayReport.status === 'leader_verified') {
+          st.className = 'today-status submitted';
+          stText.textContent = '✓ Verified by leader — awaiting admin';
+          document.getElementById('submitBtn').disabled = true;
+          document.getElementById('submitBtn').textContent = 'Already verified';
+        }
+        else {
+          st.className = 'today-status pending';
+          stText.textContent = 'Report submitted (Pending) — You can update it';
+          document.getElementById('submitBtn').disabled = false;
+          document.getElementById('submitBtn').textContent = 'Update Today\'s Report →';
+
+          document.getElementById('kc_accounts').value = todayReport.kingsChat?.accounts ?? 5;
+          document.getElementById('kc_posts').value = todayReport.kingsChat?.posts ?? 0;
+          document.getElementById('kc_likes').value = todayReport.kingsChat?.likes ?? 0;
+          document.getElementById('kc_shares').value = todayReport.kingsChat?.shares ?? 0;
+          document.getElementById('kc_comments').value = todayReport.kingsChat?.comments ?? 0;
+          document.getElementById('kc_views').value = todayReport.kingsChat?.views ?? 0;
+          document.getElementById('kc_people_engaged').value = todayReport.kingsChat?.peopleEngaged ?? 0;
+          if (document.getElementById('tf_hashtags')._set) document.getElementById('tf_hashtags')._set(todayReport.kingsChat?.hashtags);
+          if (document.getElementById('tf_engaged_out')._set) document.getElementById('tf_engaged_out')._set(todayReport.kingsChat?.engagedOut);
+          if (document.getElementById('tf_engaged_in')._set) document.getElementById('tf_engaged_in')._set(todayReport.kingsChat?.engagedIn);
+          document.getElementById('ext_wa').value = todayReport.external?.whatsapp ?? 0;
+          document.getElementById('ext_tg').value = todayReport.external?.telegram ?? 0;
+          document.getElementById('ext_tw').value = todayReport.external?.twitter ?? 0;
+          document.getElementById('ext_ig').value = todayReport.external?.instagram ?? 0;
+          document.getElementById('ext_fb').value = todayReport.external?.facebook ?? 0;
+          document.getElementById('ext_tt').value = todayReport.external?.tiktok ?? 0;
+          if (document.getElementById('tf_channels')._set) document.getElementById('tf_channels')._set(todayReport.external?.channels);
+          document.getElementById('report_notes').value = todayReport.notes ?? '';
+        }
+      }
+    }
+
+    // ── Tag fields ────────────────────────────────────────────────────────────────
+    function focusTF(id) { document.getElementById(id).focus(); }
+
+    function makeTagField(fieldId, inputId, pfx = '') {
+      const field = document.getElementById(fieldId);
+      const input = document.getElementById(inputId);
+      const items = [];
+      function add(val) {
+        val = val.trim().replace(/,$/, '');
+        if (!val || items.includes(val)) return;
+        if (pfx && !val.startsWith(pfx)) val = pfx + val;
+        items.push(val);
+        const c = document.createElement('div'); c.className = 'chip'; c.dataset.val = val;
+        c.innerHTML = `<span>${val}</span><button class="chip-x" onclick="rmChip(this,'${fieldId}')">×</button>`;
+        field.insertBefore(c, input); input.value = '';
+      }
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(input.value); }
+        if (e.key === 'Backspace' && !input.value && items.length) { const chips = field.querySelectorAll('.chip'); if (chips.length) { const v = chips[chips.length - 1].dataset.val; items.splice(items.indexOf(v), 1); chips[chips.length - 1].remove(); } }
+      });
+      input.addEventListener('blur', () => { if (input.value.trim()) add(input.value); });
+      field._get = () => [...items];
+      field._rm = (v) => { const i = items.indexOf(v); if (i > -1) items.splice(i, 1); }
+      field._clear = () => { items.length = 0; field.querySelectorAll('.chip').forEach(c => c.remove()); };
+      field._set = (arr) => { field._clear(); (arr || []).forEach(v => add(v)); };
+      return field;
+    }
+    function rmChip(btn, fieldId) { const c = btn.closest('.chip'); document.getElementById(fieldId)._rm(c.dataset.val); c.remove(); }
+
+    makeTagField('tf_hashtags', 'ti_hashtags', '#');
+    makeTagField('tf_engaged_out', 'ti_engaged_out', '@');
+    makeTagField('tf_engaged_in', 'ti_engaged_in', '@');
+    makeTagField('tf_channels', 'ti_channels', '@');
+
+    refreshStats(); // Called here so tag fields are initialized first
+
+    // ── Submit report ─────────────────────────────────────────────────────────────
+    function submitReport() {
+      const report = {
+        id: Date.now(),
+        date: todayKey,
+        memberHandle: tfUser.handle || tfUser.mainHandle,
+        memberName: tfUser.name,
+        group: tfUser.group,
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+        kingsChat: {
+          accounts: +document.getElementById('kc_accounts').value,
+          posts: +document.getElementById('kc_posts').value,
+          likes: +document.getElementById('kc_likes').value,
+          shares: +document.getElementById('kc_shares').value,
+          comments: +document.getElementById('kc_comments').value,
+          views: +document.getElementById('kc_views').value,
+          peopleEngaged: +document.getElementById('kc_people_engaged').value,
+          hashtags: document.getElementById('tf_hashtags')._get(),
+          engagedOut: document.getElementById('tf_engaged_out')._get(),
+          engagedIn: document.getElementById('tf_engaged_in')._get(),
+        },
+        external: {
+          whatsapp: +document.getElementById('ext_wa').value,
+          telegram: +document.getElementById('ext_tg').value,
+          twitter: +document.getElementById('ext_tw').value,
+          instagram: +document.getElementById('ext_ig').value,
+          facebook: +document.getElementById('ext_fb').value,
+          tiktok: +document.getElementById('ext_tt').value,
+          channels: document.getElementById('tf_channels')._get(),
+        },
+        notes: document.getElementById('report_notes').value.trim(),
+      };
+
+      fetch('api/submit_report.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(report)})
+      .then(r=>r.json()).then(d=>{
+        if(d.success){ fetchReports(); postSubmit(report); } else alert(d.message);
+      }).catch(()=>alert('Network error.'));
+    }
+
+    function postSubmit(report) {
+      refreshStats();
+      showToast('Report saved successfully!');
+    }
+
+    function showToast(msg) {
+      document.getElementById('toastMsg').textContent = msg;
+      const t = document.getElementById('toast'); t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ── History ───────────────────────────────────────────────────────────────────
+    function loadHistory() {
+      const reports = getReports();
+      const body = document.getElementById('historyBody');
+      if (!reports.length) { body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">No reports yet.</td></tr>'; return; }
+      const spClass = { pending: 'sp-pending', leader_verified: 'sp-leader', verified: 'sp-verified', rejected: 'sp-rejected' };
+      const spLabel = { pending: 'Pending', leader_verified: 'Leader Verified', verified: 'Admin Verified', rejected: 'Rejected' };
+      body.innerHTML = reports.map(r => `
+    <tr>
+      <td>${r.date}</td>
+      <td>${r.kingsChat?.posts || 0}</td>
+      <td>${r.kingsChat?.likes || 0}</td>
+      <td>${r.kingsChat?.shares || 0}</td>
+      <td>${r.kingsChat?.comments || 0}</td>
+      <td>${r.kingsChat?.views || 0}</td>
+      <td><span class="status-pill ${spClass[r.status] || 'sp-pending'}">${spLabel[r.status] || r.status}</span></td>
+    </tr>`).join('');
+    }
+
+    // ── Profile ───────────────────────────────────────────────────────────────────
+    function loadProfile() {
+      const u = tfUser;
+      const pg = document.getElementById('profileGrid');
+      function field(label, val) { return `<div class="profile-field"><div class="pf-label">${label}</div><div class="pf-value">${val || '—'}</div></div>`; }
+      function chips(arr) { if (!arr || !arr.length) return '—'; return `<div class="tag-cloud">${arr.map(t => `<span class="chip">${t}</span>`).join('')}</div>`; }
+      pg.innerHTML = `
+    ${field('Full Name', u.name)}
+    ${field('Main Handle', u.handle || u.mainHandle)}
+    ${field('Group / Unit', u.group)}
+    <div class="profile-field" style="grid-column:1/-1"><div class="pf-label">Other Handles</div>${chips(u.otherHandles)}</div>
+    <div class="profile-field" style="grid-column:1/-1"><div class="pf-label">Hashtags</div>${chips(u.hashtags)}</div>
+    ${field('WhatsApp', u.platforms?.whatsapp)}
+    ${field('Telegram', u.platforms?.telegram)}
+    ${field('Twitter/X', u.platforms?.twitter)}
+    ${field('Instagram', u.platforms?.instagram)}
+    ${field('Facebook', u.platforms?.facebook)}
+    ${field('TikTok', u.platforms?.tiktok)}
+  `;
+    }
+
+    // ── Navigation ────────────────────────────────────────────────────────────────
+    const titles = { 'report': 'Daily Report', 'history': 'Report History', 'profile': 'My Profile' };
+    function showSection(id, el) {
+      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.sb-nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('sec-' + id).classList.add('active');
+      if (el) el.classList.add('active');
+      document.getElementById('pageTitle').textContent = titles[id];
+      if (id === 'history') loadHistory();
+      if (id === 'profile') loadProfile();
+      if (window.innerWidth <= 900) toggleMobileMenu();
+    }
+
+    function toggleMobileMenu() {
+      document.querySelector('.sidebar').classList.toggle('show');
+      document.getElementById('mobileOverlay').classList.toggle('show');
+    }
+
+    function openEditProfile() {
+      const u = tfUser;
+      document.getElementById('ep_name').value = u.name || '';
+      document.getElementById('ep_group').value = u.group || '';
+      document.getElementById('ep_other_handles').value = (u.otherHandles||[]).join(', ');
+      document.getElementById('ep_hashtags').value = (u.hashtags||[]).join(', ');
+      document.getElementById('ep_wa').value = u.platforms?.whatsapp || '';
+      document.getElementById('ep_tg').value = u.platforms?.telegram || '';
+      document.getElementById('ep_tw').value = u.platforms?.twitter || '';
+      document.getElementById('ep_ig').value = u.platforms?.instagram || '';
+      document.getElementById('ep_fb').value = u.platforms?.facebook || '';
+      document.getElementById('ep_tt').value = u.platforms?.tiktok || '';
+      document.getElementById('editProfileModal').classList.add('open');
+    }
+
+    function closeEditProfile() { document.getElementById('editProfileModal').classList.remove('open'); }
+
+    function saveProfile() {
+      const body = {
+        id: tfUser.id,
+        name: document.getElementById('ep_name').value.trim(),
+        group: document.getElementById('ep_group').value,
+        otherHandles: document.getElementById('ep_other_handles').value.split(',').map(s=>s.trim()).filter(Boolean),
+        hashtags: document.getElementById('ep_hashtags').value.split(',').map(s=>s.trim()).filter(Boolean),
+        platforms: {
+          whatsapp: document.getElementById('ep_wa').value.trim(),
+          telegram: document.getElementById('ep_tg').value.trim(),
+          twitter: document.getElementById('ep_tw').value.trim(),
+          instagram: document.getElementById('ep_ig').value.trim(),
+          facebook: document.getElementById('ep_fb').value.trim(),
+          tiktok: document.getElementById('ep_tt').value.trim()
+        }
+      };
+      fetch('api/update_profile.php', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) })
+        .then(r=>r.json()).then(d=>{
+          if(d.success) {
+            sessionStorage.setItem('tf_user', JSON.stringify(d.user));
+            tfUser = d.user;
+            closeEditProfile();
+            loadProfile();
+            showToast('Profile updated successfully!');
+            document.getElementById('sbName').textContent = tfUser.name || 'Member';
+            document.getElementById('sbAvatar').textContent = (tfUser.name || 'M').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          } else { alert(d.message); }
+        }).catch(()=>alert('Network error.'));
+    }
+
+    function doLogout() { sessionStorage.removeItem('tf_user'); window.location.href = 'index.html'; }
+  </script>
+</body>
+
+</html>

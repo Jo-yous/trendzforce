@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendzForce · Sign In</title>
+<link rel="icon" type="image/png" href="logo_png.png">
+<meta name="description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+<meta property="og:title" content="TrendzForce">
+<meta property="og:description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+<meta property="og:image" content="logo_png.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f172a;
+  --paper: #f8fafc;
+  --accent: #7c3aed;
+  --accent-pale: #f5f3ff;
+  --rust: #ef4444;
+  --sage: #10b981;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --card: #ffffff;
+  --error: #ef4444;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--paper);font-family:'Inter',sans-serif;color:var(--ink);min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+
+.left-panel{background:linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.97)), url('bg-image.jpg') center/cover no-repeat;padding:80px 100px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.left-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 85%,rgba(200,168,75,.2) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(200,168,75,.08) 0%,transparent 50%);pointer-events:none}
+.left-panel::after{content:'';position:absolute;bottom:-120px;right:-80px;width:420px;height:420px;border:1px solid rgba(200,168,75,.12);border-radius:50%}
+.brand{position:relative;z-index:1}
+.brand-mark{width:80px;height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;font-size:24px}
+.brand-name{font-family:'Outfit',sans-serif;font-size:38px;font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1}
+.brand-name span{color:var(--accent)}
+.brand-sub{margin-top:10px;font-size:13px;color:rgba(255,255,255,.4);letter-spacing:.04em}
+.left-copy{position:relative;z-index:1}
+.left-copy h2{font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:14px}
+.left-copy p{font-size:14px;color:rgba(255,255,255,.48);line-height:1.75;max-width:340px}
+.stat-row{display:flex;gap:28px;margin-top:32px;position:relative;z-index:1}
+.stat-item .num{font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--accent)}
+.stat-item .lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
+
+.right-panel{display:flex;align-items:center;justify-content:center;padding:80px 100px}
+.login-box{width:100%;max-width:390px}
+.login-title{font-family:'Outfit',sans-serif;font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-1px;margin-bottom:8px}
+.login-sub{font-size:14px;color:var(--muted);margin-bottom:32px}
+
+.role-tabs{display:flex;background:var(--border);border-radius:10px;padding:3px;margin-bottom:26px}
+.role-tab{flex:1;padding:11px 6px;background:transparent;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.03em}
+.role-tab.active{background:var(--ink);color:#fff}
+
+.form-group{margin-bottom:20px}
+label{display:block;font-size:11px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase}
+input[type=text],input[type=password],input[type=email],select,textarea{width:100%;padding:12px 14px;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);border-left:3px solid var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+input::placeholder{color:#94a3b8}
+
+.btn-primary{width:100%;padding:13px;background:linear-gradient(to right, var(--ink), #1e293b);color:#fff;border:1px solid transparent;border-bottom:3px solid var(--accent);border-radius:10px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.04em;text-transform:uppercase}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+
+.signup-row{text-align:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.signup-row a{color:var(--ink);font-weight:600;text-decoration:none;cursor:pointer}
+.signup-row a:hover{color:var(--accent)}
+
+.error-msg{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:0 13px;font-size:13px;color:var(--error);margin-bottom:0;opacity:0;visibility:hidden;height:0;transition:all .2s ease;overflow:hidden;}
+.error-msg.show{padding:10px 13px;margin-bottom:20px;opacity:1;visibility:visible;height:auto;}
+
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;font-size:12px;color:var(--muted)}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+@media(max-width:768px){
+  body{display:flex; flex-direction:column}
+  .left-panel{padding:16px 20px; background:var(--ink); flex:none; display:flex; flex-direction:row; align-items:center; justify-content:flex-start; gap:12px; min-height:0; border-bottom:1px solid rgba(255,255,255,0.1);}
+  .left-panel::before, .left-panel::after, .left-copy, .left-panel > div:last-child {display:none}
+  .brand{display:flex; align-items:center; gap:12px; margin:0}
+  .brand-mark{width:36px; height:36px; margin:0}
+  .brand-name{font-size:22px}
+  .brand-sub{display:none}
+  .right-panel{padding:32px 24px 60px; min-height:calc(100vh - 70px); align-items:flex-start}
+  .login-box{margin-top:20px}
+}
+</style>
+</head>
+<body>
+<div class="left-panel">
+  <div class="brand">
+    <div class="brand-mark"><img src="logo_png.png" alt="Logo" style="width:100%; height:100%; object-fit:contain; border-radius:13px;"></div>
+    <div class="brand-name">Trendz<span>Force</span></div>
+    <div class="brand-sub">Rhapsody of Realities · Social Trending Platform</div>
+  </div>
+  <div class="left-copy">
+    <h2>Coordinated trending,<br>tracked & verified.</h2>
+    <p>Every post, like, share and comment recorded. Group leaders verify. Admin approves. The mission moves forward at scale.</p>
+    <div class="stat-row">
+      <div class="stat-item"><div class="num">500</div><div class="lbl">Members</div></div>
+      <div class="stat-item"><div class="num">5</div><div class="lbl">Accounts Each</div></div>
+      <div class="stat-item"><div class="num">Daily</div><div class="lbl">Reporting</div></div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:rgba(255,255,255,.22);position:relative;z-index:1">© 2026 TrendzForce</div>
+</div>
+
+<div class="right-panel">
+  <div class="login-box">
+    <div class="login-title">Welcome back</div>
+    <div class="login-sub">Sign in to your TrendzForce account</div>
+
+    <div class="role-tabs">
+      <button class="role-tab active" onclick="setRole('member',this)">Member</button>
+      <button class="role-tab" onclick="setRole('leader',this)">Group Leader</button>
+      <button class="role-tab" onclick="setRole('admin',this)">Admin</button>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="form-group">
+      <label>KingsChat Handle</label>
+      <input type="text" id="loginHandle" placeholder="@yourhandle" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+        <label style="margin-bottom:0">Password</label>
+        <a href="forgot-password.html" style="font-size:11px; color:var(--accent); text-decoration:none; font-weight:600">Forgot password?</a>
+      </div>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="off">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Sign In →</button>
+
+    <div class="divider">or</div>
+    <div class="signup-row">New member? <a onclick="window.location.href='register.html'">Create your profile</a></div>
+
+  </div>
+</div>
+
+<script>
+let currentRole='member';
+function setRole(role,el){currentRole=role;document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
+
+const DEMO={
+  '@member1':{pass:'pass123',role:'member',name:'Sample Member',group:'Alpha Unit',handle:'@member1'},
+  '@leader1':{pass:'pass123',role:'leader',name:'Unit Leader',group:'Alpha Unit',handle:'@leader1'},
+  '@admin':  {pass:'pass123',role:'admin', name:'Administrator',group:null,handle:'@admin'},
+};
+
+function doLogin(){
+  const handle=(document.getElementById('loginHandle').value.trim().toLowerCase());
+  const pass=document.getElementById('loginPass').value;
+  if(!handle||!pass){showErr('Please fill in all fields.');return;}
+
+  fetch('api/login.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({handle,password:pass,role:currentRole})})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){sessionStorage.setItem('tf_user',JSON.stringify(d.user));redirect(d.user.role);}
+    else showErr(d.message);
+  }).catch(()=>showErr('Network error.'));
+}
+function redirect(role){
+  if(role==='admin')window.location.href='admin.html';
+  else if(role==='leader')window.location.href='leader.html';
+  else window.location.href='member.html';
+}
+function showErr(msg){const e=document.getElementById('errorMsg');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),4000)}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+const ex=sessionStorage.getItem('tf_user');if(ex){try{redirect(JSON.parse(ex).role)}catch(e){}}
+</script>
+</body>
+</html>

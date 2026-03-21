@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendzForce · Register</title>
+  <link rel="icon" type="image/png" href="logo_png.png">
+  <meta name="description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+  <meta property="og:title" content="TrendzForce">
+  <meta property="og:description" content="TrendzForce: Rhapsody of Realities Social Trending Platform">
+  <meta property="og:image" content="logo_png.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0f172a;
+      --paper: #f8fafc;
+      --gold: #7c3aed;
+      --gold-pale: #f5f3ff;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --error: #ef4444;
+      --success: #10b981;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      background: var(--paper);
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 0 0 60px
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--ink);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100
+    }
+
+    .topbar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px
+    }
+
+    .topbar-brand span {
+      color: var(--gold)
+    }
+
+    .topbar-back {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .5);
+      text-decoration: none;
+      transition: color .2s;
+      cursor: pointer
+    }
+
+    .topbar-back:hover {
+      color: #fff
+    }
+
+    /* PAGE */
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px
+    }
+
+    .page-header {
+      margin-bottom: 40px
+    }
+
+    .page-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--ink);
+      line-height: 1.1
+    }
+
+    .page-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.6
+    }
+
+    /* SECTIONS */
+    .section {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      position: relative
+    }
+
+    .section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold-pale)
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .form-grid .full {
+      grid-column: 1/-1
+    }
+
+    .form-group {
+      margin-bottom: 0
+    }
+
+    .form-group+.form-group {
+      margin-top: 0
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    .label-hint {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-left: 6px
+    }
+
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 13px;
+      background: #f9f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200, 168, 75, .1);
+      background: #fff
+    }
+
+    input::placeholder {
+      color: #ccc
+    }
+
+    select option {
+      background: #fff
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 72px;
+      line-height: 1.5
+    }
+
+    /* Handle input with @ prefix */
+    .handle-wrap {
+      position: relative
+    }
+
+    .handle-at {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 14px;
+      pointer-events: none
+    }
+
+    .handle-wrap input {
+      padding-left: 28px
+    }
+
+    /* Tag chip input */
+    .tags-field {
+      background: #f9f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 10px;
+      min-height: 46px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      cursor: text;
+      transition: border-color .2s, box-shadow .2s
+    }
+
+    .tags-field:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200, 168, 75, .1);
+      background: #fff
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--gold-pale);
+      border: 1px solid rgba(200, 168, 75, .4);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: #6b5a2a;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap
+    }
+
+    .chip-x {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #a08030;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0;
+      display: flex;
+      align-items: center
+    }
+
+    .chip-x:hover {
+      color: var(--error)
+    }
+
+    .tag-input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      min-width: 100px;
+      flex: 1;
+      padding: 2px 4px
+    }
+
+    .tag-input::placeholder {
+      color: #bbb
+    }
+
+    .tag-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px
+    }
+
+    /* Platform row */
+    .platform-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0eee8
+    }
+
+    .platform-row:last-child {
+      border-bottom: none
+    }
+
+    .platform-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink)
+    }
+
+    .platform-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: var(--gold-pale)
+    }
+
+    /* Accounts section */
+    .accounts-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px
+    }
+
+    .account-card {
+      background: #f9f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .account-card .ac-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: .05em
+    }
+
+    .account-card input {
+      padding: 8px 10px;
+      font-size: 12px
+    }
+
+    /* Submit */
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .02em;
+      margin-top: 8px
+    }
+
+    .btn-primary:hover {
+      background: #222;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .15)
+    }
+
+    .error-banner {
+      background: #fff1ee;
+      border: 1px solid #f5c8be;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--error);
+      margin-bottom: 20px;
+      display: none
+    }
+
+    .success-banner {
+      background: #eef5f0;
+      border: 1px solid #b8d9c4;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--success);
+      margin-bottom: 20px;
+      display: none
+    }
+
+    .req {
+      color: var(--error);
+      margin-left: 2px
+    }
+
+    .signin-row {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .signin-row a {
+      color: var(--ink);
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer
+    }
+
+    .signin-row a:hover {
+      color: var(--gold)
+    }
+
+    @media(max-width:640px) {
+      .form-grid {
+        grid-template-columns: 1fr
+      }
+
+      .accounts-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .page {
+        padding: 32px 16px
+      }
+
+      .topbar {
+        padding: 14px 20px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="topbar-brand" style="display:flex; align-items:center; gap:8px;">
+      <img src="logo_png.png" alt="Logo" style="height:24px; border-radius:4px;">
+      <div>Trendz<span>Force</span></div>
+    </div>
+    <a class="topbar-back" onclick="window.location.href='index.html'">← Back to sign in</a>
+  </div>
+
+  <div class="page">
+    <div class="page-header">
+      <div class="page-title">Create your profile</div>
+      <div class="page-sub">Register as a TrendzForce member. You'll use this account to submit your daily trending
+        reports.</div>
+    </div>
+
+    <div class="error-banner" id="errBanner"></div>
+    <div class="success-banner" id="okBanner"></div>
+
+    <!-- 1. Personal -->
+    <div class="section">
+      <div class="section-label">Personal Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="reg_name" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label>Trending Group / Unit <span class="req">*</span></label>
+          <select id="reg_group">
+            <option value="">Select your group...</option>
+            <option>ROR APP TRENDFORCE A</option>
+            <option></option>
+            <option>ROR PROGRAMS TRENDFORCE C</option>
+            <option>ROR DSD TRENDFORCE D</option>
+            <option>ROR DSD TRENDFORCE E</option>
+            <option>ROR PROGRAMS TRENDFORCE F</option>
+            <option>ROR PROGRAMS TRENDFORCE G</option>
+            <option>ROR APP TRENDFORCE H</option>
+            <option>ROR PROGRAMS TRENDFORCE I</option>
+            <option>ROR APP TRENDFORCE J</option>
+            <option>ROR PROGRAMS TRENDFORCE K
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Password <span class="req">*</span></label>
+          <input type="password" id="reg_pass" placeholder="Create a password">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password <span class="req">*</span></label>
+          <input type="password" id="reg_pass2" placeholder="Repeat password">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. KingsChat -->
+    <div class="section">
+      <div class="section-label">KingsChat Handles</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Main KingsChat Handle <span class="req">*</span></label>
+          <div class="handle-wrap">
+            <span class="handle-at">@</span>
+            <input type="text" id="reg_main_handle" placeholder="yourprimaryhandle">
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Other KingsChat Handles<span class="label-hint">(up to 4 more — press Enter or comma after
+              each)</span></label>
+          <div class="tags-field" id="other_handles_field"
+            onclick="document.getElementById('other_handles_input').focus()">
+            <input class="tag-input" id="other_handles_input" placeholder="Type a handle and press Enter...">
+          </div>
+          <div class="tag-hint">These are your additional KingsChat accounts used for trending.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Hashtags -->
+    <div class="section">
+      <div class="section-label">Trending Hashtags</div>
+      <div class="form-group">
+        <label>Hashtags you use<span class="label-hint">(press Enter or comma after each)</span></label>
+        <div class="tags-field" id="hashtags_field" onclick="document.getElementById('hashtags_input').focus()">
+          <input class="tag-input" id="hashtags_input" placeholder="#kamy  #rortte2  etc...">
+        </div>
+        <div class="tag-hint">Add all hashtags you regularly use in your trending posts.</div>
+      </div>
+    </div>
+
+    <!-- 4. External Platforms -->
+    <div class="section">
+      <div class="section-label">External Social Media Handles</div>
+      <div class="platform-row">
+        <div class="platform-name">
+          <div class="platform-icon">💬</div>WhatsApp
+        </div>
+        <input type="text" id="plt_whatsapp" placeholder="Channel link or @number">
+      </div>
+      <div class="platform-row">
+        <div class="platform-name">
+          <div class="platform-icon">✈️</div>Telegram
+        </div>
+        <input type="text" id="plt_telegram" placeholder="@username or channel link">
+      </div>
+      <div class="platform-row">
+        <div class="platform-name">
+          <div class="platform-icon">🐦</div>Twitter/X
+        </div>
+        <input type="text" id="plt_twitter" placeholder="@username">
+      </div>
+      <div class="platform-row">
+        <div class="platform-name">
+          <div class="platform-icon">📸</div>Instagram
+        </div>
+        <input type="text" id="plt_instagram" placeholder="@username">
+      </div>
+      <div class="platform-row">
+        <div class="platform-name">
+          <div class="platform-icon">👍</div>Facebook
+        </div>
+        <input type="text" id="plt_facebook" placeholder="Profile name or page URL">
+      </div>
+      <div class="platform-row">
+        <div class="platform-name">
+          <div class="platform-icon">🎵</div>TikTok
+        </div>
+        <input type="text" id="plt_tiktok" placeholder="@username">
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="submitRegistration()">Create My TrendzForce Profile →</button>
+    <div class="signin-row">Already have an account? <a onclick="window.location.href='index.html'">Sign in</a></div>
+  </div>
+
+  <script>
+    // ── Tag chip system ───────────────────────────────────────────────────────────
+    function makeTagField(fieldId, inputId, maxItems = 10, prefix = '') {
+      const field = document.getElementById(fieldId);
+      const input = document.getElementById(inputId);
+      const items = [];
+
+      function addItem(val) {
+        val = val.trim().replace(/,$/, '');
+        if (!val || items.includes(val) || items.length >= maxItems) return;
+        if (prefix && !val.startsWith(prefix)) val = prefix + val;
+        items.push(val);
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.dataset.val = val;
+        chip.innerHTML = `<span>${val}</span><button class="chip-x" type="button" onclick="removeChip(this,'${fieldId}')">×</button>`;
+        field.insertBefore(chip, input);
+        input.value = '';
+      }
+
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addItem(input.value); }
+        if (e.key === 'Backspace' && !input.value && items.length) {
+          const last = field.querySelectorAll('.chip');
+          if (last.length) { const v = last[last.length - 1].dataset.val; items.splice(items.indexOf(v), 1); last[last.length - 1].remove(); }
+        }
+      });
+      input.addEventListener('blur', () => { if (input.value) addItem(input.value); });
+      field._getItems = () => [...items];
+      field._removeItem = (v) => { const i = items.indexOf(v); if (i > -1) items.splice(i, 1); };
+    }
+
+    function removeChip(btn, fieldId) {
+      const chip = btn.closest('.chip');
+      const field = document.getElementById(fieldId);
+      field._removeItem(chip.dataset.val);
+      chip.remove();
+    }
+
+    makeTagField('other_handles_field', 'other_handles_input', 4, '@');
+    makeTagField('hashtags_field', 'hashtags_input', 30, '#');
+
+    // ── Registration ──────────────────────────────────────────────────────────────
+    function submitRegistration() {
+      const name = document.getElementById('reg_name').value.trim();
+      const group = document.getElementById('reg_group').value;
+      const pass = document.getElementById('reg_pass').value;
+      const pass2 = document.getElementById('reg_pass2').value;
+      const mainHandle = document.getElementById('reg_main_handle').value.trim().replace(/^@/, '');
+      const otherHandles = document.getElementById('other_handles_field')._getItems();
+      const hashtags = document.getElementById('hashtags_field')._getItems();
+      const platforms = {
+        whatsapp: document.getElementById('plt_whatsapp').value.trim(),
+        telegram: document.getElementById('plt_telegram').value.trim(),
+        twitter: document.getElementById('plt_twitter').value.trim(),
+        instagram: document.getElementById('plt_instagram').value.trim(),
+        facebook: document.getElementById('plt_facebook').value.trim(),
+        tiktok: document.getElementById('plt_tiktok').value.trim(),
+      };
+
+      if (!name) return showErr('Please enter your full name.');
+      if (!group) return showErr('Please select your trending group.');
+      if (!mainHandle) return showErr('Please enter your main KingsChat handle.');
+      if (!pass) return showErr('Please create a password.');
+      if (pass !== pass2) return showErr('Passwords do not match.');
+      if (pass.length < 6) return showErr('Password must be at least 6 characters.');
+
+      const payload = { name, group, mainHandle: '@' + mainHandle, otherHandles, hashtags, platforms, password: pass };
+
+      fetch('api/register.php', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
+      }).then(r=>r.json()).then(d=>{
+        if(d.success){ showOk('Profile created! Redirecting...'); setTimeout(()=>window.location.href='index.html',1800); }
+        else showErr(d.message);
+      }).catch(()=>showErr('Network error.'));
+    }
+
+    function showErr(msg) { const e = document.getElementById('errBanner'); e.textContent = msg; e.style.display = 'block'; document.getElementById('okBanner').style.display = 'none'; window.scrollTo(0, 0) }
+    function showOk(msg) { const e = document.getElementById('okBanner'); e.textContent = msg; e.style.display = 'block'; document.getElementById('errBanner').style.display = 'none'; window.scrollTo(0, 0) }
+  </script>
+</body>
+
+</html>
