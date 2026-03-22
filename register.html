@@ -488,7 +488,7 @@
           <select id="reg_group">
             <option value="">Select your group...</option>
             <option>ROR APP TRENDFORCE A</option>
-            <option></option>
+            <option>ROR PROGRAMS TRENDFORCE B</option>
             <option>ROR PROGRAMS TRENDFORCE C</option>
             <option>ROR DSD TRENDFORCE D</option>
             <option>ROR DSD TRENDFORCE E</option>
@@ -662,11 +662,11 @@
       const payload = { name, group, mainHandle: '@' + mainHandle, otherHandles, hashtags, platforms, password: pass };
 
       fetch('api/register.php', {
-        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
-      }).then(r=>r.json()).then(d=>{
-        if(d.success){ showOk('Profile created! Redirecting...'); setTimeout(()=>window.location.href='index.html',1800); }
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      }).then(r => r.json()).then(d => {
+        if (d.success) { showOk('Profile created! Redirecting...'); setTimeout(() => window.location.href = 'index.html', 1800); }
         else showErr(d.message);
-      }).catch(()=>showErr('Network error.'));
+      }).catch(() => showErr('Network error.'));
     }
 
     function showErr(msg) { const e = document.getElementById('errBanner'); e.textContent = msg; e.style.display = 'block'; document.getElementById('okBanner').style.display = 'none'; window.scrollTo(0, 0) }

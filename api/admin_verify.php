@@ -2,6 +2,7 @@
 require 'config.php';
 
 $auth   = require_auth('admin');
+if ($auth['adminLevel'] >= 3) respond(['success'=>false, 'message'=>'Restricted. Your admin tier cannot approve reports.']);
 $b      = body();
 $id     = intval($b['id'] ?? 0);
 $status = $b['status'] ?? 'verified';

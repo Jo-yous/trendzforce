@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS members (
   password_hash   VARCHAR(255)  NOT NULL,
   group_name      VARCHAR(100)  DEFAULT NULL,
   role            ENUM('member','leader','admin') NOT NULL DEFAULT 'member',
+  admin_level     INT           DEFAULT 0,
   other_handles   JSON          DEFAULT NULL,
   hashtags        JSON          DEFAULT NULL,
   platforms       JSON          DEFAULT NULL,

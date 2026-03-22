@@ -278,9 +278,9 @@ tr:last-child td{border-bottom:none}
       <div class="section-card">
         <div class="section-card-header"><div class="sct">All Members</div><div style="font-size:12px;color:var(--muted)" id="memberCount">0 members</div></div>
         <table>
-          <thead><tr><th>Name</th><th>Handle</th><th>Group</th><th>Reports</th><th>Last Report</th><th>Today</th></tr></thead>
+          <thead><tr><th>Name</th><th>Handle</th><th>Group</th><th>Reports</th><th>Last Report</th><th>Today</th><th class="col-actions" style="display:none">Manage</th></tr></thead>
           <tbody id="membersBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">No members registered yet.</td></tr>
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">No members registered yet.</td></tr>
           </tbody>
         </table>
       </div>
@@ -358,9 +358,26 @@ let tfUser = null;
 try { tfUser = JSON.parse(sessionStorage.getItem('tf_user')); } catch(e) {}
 if (!tfUser || tfUser.role !== 'admin') window.location.href = 'index.html';
 
+const isSuper = tfUser.adminLevel === 1;
+const isAdm1 = tfUser.adminLevel === 2;
+const canApprove = isSuper || isAdm1;
+const canExport = isSuper || isAdm1;
+
 document.getElementById('sbName').textContent = tfUser.name || 'Administrator';
 document.getElementById('sbHandle').textContent = tfUser.handle || '@admin';
 document.getElementById('topbarDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+let badgeIcon = '🔑', badgeText = 'Admin';
+if(tfUser.adminLevel === 1) { badgeIcon='👑'; badgeText='Level 1 Admin'; }
+else if(tfUser.adminLevel === 2) { badgeIcon='🛡️'; badgeText='Level 2 Admin'; }
+else if(tfUser.adminLevel >= 3) { badgeIcon='👁️'; badgeText='Level 3 Admin'; }
+const bdg = document.querySelector('.sb-role-badge');
+if(bdg) bdg.textContent = badgeIcon + ' ' + badgeText;
+
+if(!canExport) {
+  const expBtn = document.querySelector('.btn-export');
+  if(expBtn) expBtn.style.display = 'none';
+}
 
 // ── Data layer ────────────────────────────────────────────────────────────────
 let remoteReports = [];
@@ -429,8 +446,7 @@ function renderTable(){
       <td><span class="status-pill ${spClass[r.status]||'sp-pending'}">${spLabel[r.status]||r.status}</span></td>
       <td><div class="action-btns">
         <button class="btn-sm btn-view" onclick="openModal(${r.id})">View</button>
-        ${r.status==='leader_verified'?`<button class="btn-sm btn-verify" onclick="finalVerify(${r.id})">✓ Approve</button><button class="btn-sm btn-reject" onclick="rejectReport(${r.id})">Reject</button>`:''}
-        ${r.status==='pending'?`<button class="btn-sm btn-verify" onclick="finalVerify(${r.id})">✓ Approve</button><button class="btn-sm btn-reject" onclick="rejectReport(${r.id})">Reject</button>`:''}
+        ${(canApprove && (r.status==='leader_verified'||r.status==='pending'))?`<button class="btn-sm btn-verify" onclick="finalVerify(${r.id})">✓ Approve</button><button class="btn-sm btn-reject" onclick="rejectReport(${r.id})">Reject</button>`:''}
       </div></td>
     </tr>`).join('');
 }
@@ -494,7 +510,7 @@ function openModal(id){
       ${r.adminVerifiedAt?'<br>Admin approved: '+new Date(r.adminVerifiedAt).toLocaleString():''}
     </div>`;
 
-  const canAct = r.status==='pending'||r.status==='leader_verified';
+  const canAct = canApprove && (r.status==='pending'||r.status==='leader_verified');
   document.getElementById('modalFooter').innerHTML = canAct
     ? `<button class="mbtn-verify" onclick="finalVerify(${id},true)">✓ Approve</button>
        <button class="mbtn-reject" onclick="rejectReport(${id},true)">✕ Reject</button>
@@ -580,20 +596,39 @@ function loadGroups(){
 }
 
 // ── Members view ──────────────────────────────────────────────────────────────
-function loadMembers(){
-  const all = getAllReports();
-  const members = {};
-  all.forEach(r=>{
+async function loadMembers(){
+  const allReports = getAllReports();
+  let membersList = [];
+  try {
+    const res = await fetch('api/members.php');
+    const d = await res.json();
+    if(d.success) membersList = d.members;
+  } catch(e) {}
+
+  const stats = {};
+  allReports.forEach(r=>{
     const h=r.memberHandle||r.memberName||'unknown';
-    if(!members[h]) members[h]={name:r.memberName,handle:r.memberHandle,group:r.group,count:0,last:null,today:false};
-    members[h].count++;
-    if(!members[h].last||r.date>members[h].last) members[h].last=r.date;
-    if(r.date===todayKey) members[h].today=true;
+    if(!stats[h]) stats[h]={count:0,last:null,today:false};
+    stats[h].count++;
+    if(!stats[h].last||r.date>stats[h].last) stats[h].last=r.date;
+    if(r.date===todayKey) stats[h].today=true;
   });
-  const list = Object.values(members).sort((a,b)=>b.count-a.count);
+
+  const list = membersList.length ? membersList.map(m => {
+    const s = stats[m.main_handle] || {count:0, last:null, today:false};
+    return { id: m.id, name: m.full_name, handle: m.main_handle, group: m.group_name, count: s.count, last: s.last, today: s.today };
+  }) : Object.values(stats); // fallback just in case
+  
+  if(membersList.length) list.sort((a,b)=>b.count-a.count);
+
   document.getElementById('memberCount').textContent = list.length+' member'+(list.length!==1?'s':'');
+  if(isSuper) {
+    const thA = document.querySelector('.col-actions');
+    if (thA) thA.style.display = 'table-cell';
+  }
+
   const body = document.getElementById('membersBody');
-  if(!list.length){body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted)">No members found.</td></tr>';return;}
+  if(!list.length){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">No members found.</td></tr>';return;}
   body.innerHTML=list.map(m=>`
     <tr>
       <td style="font-weight:600">${m.name||'—'}</td>
@@ -602,8 +637,22 @@ function loadMembers(){
       <td style="font-weight:600;font-family:'Outfit',sans-serif">${m.count}</td>
       <td style="font-size:12px;color:var(--muted)">${m.last||'—'}</td>
       <td>${m.today?'<span class="status-pill sp-verified">✓ Submitted</span>':'<span class="status-pill sp-rejected">Not yet</span>'}</td>
+      ${isSuper && m.handle !== tfUser.handle ? `<td>
+        <button class="btn-sm btn-reject" onclick="manageUser(${m.id||0}, 'block')">Block</button>
+        <button class="btn-sm btn-reject" style="background:#fef2f2;border-color:#fca5a5" onclick="manageUser(${m.id||0}, 'delete')">Delete</button>
+      </td>` : (isSuper ? '<td></td>' : '')}
     </tr>`).join('');
 }
+
+window.manageUser = function(id, action) {
+  if(!id) return showToast('User ID missing. Try refreshing.');
+  if(!confirm('Are you sure you want to ' + action + ' this user?')) return;
+  fetch('api/manage_user.php', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id, action}) })
+    .then(r=>r.json()).then(d=>{
+      showToast(d.message || d.error);
+      if(d.success) loadMembers();
+    });
+};
 
 // ── CSV Export ────────────────────────────────────────────────────────────────
 function exportCSV(){

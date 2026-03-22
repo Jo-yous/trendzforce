@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-$auth = require_auth('leader','admin');
+$auth = require_auth('leader', 'admin');
 
 if ($auth['role']==='leader') {
     $stmt = db()->prepare('SELECT id,full_name,main_handle,group_name,other_handles,hashtags,platforms,created_at FROM members WHERE group_name=? AND role="member" ORDER BY full_name');

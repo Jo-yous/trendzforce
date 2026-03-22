@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-$auth = require_auth('member');
+$auth = require_auth('member', 'leader');
 $b    = body();
 $date = $b['date'] ?? date('Y-m-d');
 $kc   = $b['kingsChat'] ?? [];
